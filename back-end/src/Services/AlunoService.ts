@@ -1,4 +1,4 @@
-import { Aluno } from "../models/entity/AlunoEntity";
+import { AlunoCompletoDTO } from "../models/dto/AlunoCompletoDTO";
 import { prisma } from "../server";
 import { DisciplinaService } from "./DisciplinaService";
 
@@ -31,17 +31,15 @@ export class AlunoService {
     }));
   }
 
-  public static async create(aluno: Aluno) {
-    const disciplinas = await DisciplinaService.getAll();
-
+  public static async create(aluno: AlunoCompletoDTO) {
     const novoAluno = await prisma.alunos.create({
       data: {
         ...aluno,
         notas: {
           createMany: {
-            data: disciplinas.map((disciplina) => ({
-              disciplina: disciplina.id,
-              nota: 0
+            data: aluno.notas.map(nota => ({
+              disciplina: nota.disciplina.id,
+              nota: nota.nota
             }))
           }
         }

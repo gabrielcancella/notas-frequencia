@@ -1,11 +1,10 @@
 import { AlunoSchema } from "../models/entity/AlunoEntity";
 import { FastifyTypedInstance } from "../models/types/FastifyTypedInstace";
 import { z } from "zod";
-import { AlunoCompletoResponseSchema } from "../models/Response/AlunoCompletoResponse";
+import { AlunoCompletoDTOSchema } from "../models/dto/AlunoCompletoDTO";
 import { AlunoService } from "../Services/AlunoService";
 
 export default function AlunoController(app: FastifyTypedInstance) {
-  // Pega a lista de alunos
   app.get("/", {
     schema: {
       tags: ["Alunos"],
@@ -26,7 +25,7 @@ export default function AlunoController(app: FastifyTypedInstance) {
       tags: ["Alunos"],
       description: "Lista todos os alunos com notas e frequência",
       response: {
-        200: z.array(AlunoCompletoResponseSchema).describe("Lista de alunos com notas e frequência"),
+        200: z.array(AlunoCompletoDTOSchema).describe("Lista de alunos com notas e frequência"),
         204: z.object({ message: z.string() }).describe("Nenhum aluno encontrado")
       }
     }
@@ -36,12 +35,11 @@ export default function AlunoController(app: FastifyTypedInstance) {
     return alunos.length >= 1 ? reply.send(alunos) : reply.status(204).send({ message: "Nenhum aluno encontrado" });
   });
 
-  // Cria um novo aluno
   app.post("/", {
     schema: {
       tags: ["Alunos"],
       description: "Cria um novo aluno",
-      body: AlunoSchema,
+      body: AlunoCompletoDTOSchema,
       response: {
         201: AlunoSchema.describe("Aluno criado com sucesso"),
       }

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AlunosCompletoResponse } from "@/models/response/AlunosCompletoResponse";
+import { AlunoCompletoDTO } from "@/models/dto/AlunoCompletoDTO";
 import { AdicionarAluno } from "@/components/AdicionarAluno";
 import { AlunoService } from "@/services/AlunoService";
 import { ColumnDef } from "@tanstack/react-table";
@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { DisciplinaService } from "@/services/DisciplinaService";
 
 export default function AlunosPage() {
-  const [ columns, setColumns ] = React.useState<ColumnDef<AlunosCompletoResponse>[]>();
+  const [ columns, setColumns ] = React.useState<ColumnDef<AlunoCompletoDTO>[]>();
 
   const { data } = useQuery({
     queryKey: ["alunos"],
@@ -28,7 +28,7 @@ export default function AlunosPage() {
   React.useEffect(() => {
     if (!data) return;
 
-    const temp: ColumnDef<AlunosCompletoResponse>[] = [
+    const temp: ColumnDef<AlunoCompletoDTO>[] = [
       {
         accessorKey: "id",
         header: "ID",
@@ -38,7 +38,7 @@ export default function AlunosPage() {
         accessorKey: "nome",
         header: "Nome",
       },
-      ...(data.disciplinas ?? []).map((disciplina): ColumnDef<AlunosCompletoResponse> => ({
+      ...(data.disciplinas ?? []).map((disciplina): ColumnDef<AlunoCompletoDTO> => ({
         id: `nota-${disciplina.id}`,
         accessorFn: (row) => {
           const nota = row.notas.find(n => n.disciplina.id === disciplina.id);

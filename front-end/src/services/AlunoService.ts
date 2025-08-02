@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 import { AlunoSchema } from "@/models/entity/AlunoEntity";
-import { AlunosCompletoResponseSchema } from "@/models/response/AlunosCompletoResponse";
+import { AlunoCompletoDTO, AlunoCompletoDTOSchema } from "@/models/dto/AlunoCompletoDTO";
 
 export class AlunoService {
   public static async getAll() {
@@ -14,8 +14,14 @@ export class AlunoService {
   public static async getAllCompleto() {
     const res = await api.get("/alunos/completo");
 
-    const data = AlunosCompletoResponseSchema.array().parse(res.data);
+    const data = AlunoCompletoDTOSchema.array().parse(res.data);
 
     return data;
+  }
+
+  public static async create(aluno: AlunoCompletoDTO) {
+    const res = await api.post("/alunos", aluno);
+
+    return res;
   }
 }
