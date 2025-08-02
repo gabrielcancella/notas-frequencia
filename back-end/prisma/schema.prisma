@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model alunos {
+  id         Int     @id @default(autoincrement())
+  nome       String  @db.VarChar(150)
+  frequencia Int     @default(100)
+  notas      notas[]
+
+  @@index([id], map: "id")
+}
+
+model disciplinas {
+  id    Int     @id @default(autoincrement())
+  nome  String  @db.VarChar(50)
+  notas notas[]
+
+  @@index([id], map: "id")
+}
+
+model notas {
+  id          Int         @id @default(autoincrement())
+  disciplina  Int
+  aluno       Int
+  nota        Int         @default(0)
+  alunos      alunos      @relation(fields: [aluno], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "nota_aluno")
+  disciplinas disciplinas @relation(fields: [disciplina], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "nota_disciplina")
+
+  @@unique([disciplina, aluno], map: "disciplina_aluno")
+  @@index([disciplina], map: "disciplina")
+  @@index([id], map: "id")
+  @@index([aluno], map: "nota_aluno")
+}
