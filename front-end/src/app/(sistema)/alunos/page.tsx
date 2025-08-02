@@ -58,6 +58,28 @@ export default function AlunosPage() {
         },
       })),
       {
+        id: "media-notas",
+        header: () => {
+          return (
+            <div className="flex flex-1 justify-center">
+              Média das Notas
+            </div>
+          );
+        },
+        accessorFn: (row) => {
+          const somaNotas = row.notas.reduce((valorAtual, nota) => valorAtual + nota.nota, 0);
+          return (somaNotas / row.notas.length).toFixed(1) || 0;
+        },
+        cell: ({ row }) => {
+          const media: number = row.getValue("media-notas");
+          return (
+            <div className="flex flex-1 justify-center">
+              {media}
+            </div>
+          );
+        }
+      },
+      {
         accessorKey: "frequencia",
         header: () => (
           <div className="flex flex-1 justify-center">
