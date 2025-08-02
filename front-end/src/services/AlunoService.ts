@@ -24,4 +24,10 @@ export class AlunoService {
 
     return res;
   }
+
+  public static async update(aluno: AlunoCompletoDTO) {
+    const res = await api.put(`/alunos/${aluno.id}`, aluno);
+
+    return res;
+  }
 }

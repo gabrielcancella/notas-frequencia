@@ -2,13 +2,14 @@
 
 import * as React from "react";
 import { AlunoCompletoDTO } from "@/models/dto/AlunoCompletoDTO";
-import { AdicionarAluno } from "@/components/AdicionarAluno";
+import { AdicionarAlunoButton } from "@/components/AdicionarAluno";
 import { AlunoService } from "@/services/AlunoService";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { DisciplinaService } from "@/services/DisciplinaService";
+import { AlterarAlunoButton } from "@/components/AlterarAluno";
 
 export default function AlunosPage() {
   const [ columns, setColumns ] = React.useState<ColumnDef<AlunoCompletoDTO>[]>();
@@ -76,10 +77,10 @@ export default function AlunosPage() {
             Ações
           </div>
         ),
-        cell: () => {
+        cell: ({ row }) => {
           return (
             <div className="flex flex-1 justify-center">
-              <Button size={"sm"} variant={"outline"}>Alterar</Button>
+              <AlterarAlunoButton aluno={row.original} />
             </div>
           )
         }
@@ -94,7 +95,7 @@ export default function AlunosPage() {
       <section className="relative flex justify-between items-center py-4">
         <Button variant={"outline"}>Adicionar Aluno</Button>
         <h1 className="font-bold text-2xl">Alunos</h1>
-        <AdicionarAluno />
+        <AdicionarAlunoButton />
       </section>
       <section className="flex flex-1 justify-center">
         <DataTable columns={columns ?? []} data={data?.alunos ?? []} />

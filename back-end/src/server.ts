@@ -14,6 +14,7 @@ const app = fastify({}).withTypeProvider<ZodTypeProvider>();
 // Liberar para qualquer origem
 app.register(fastifyCors, {
   origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
 });
 
 // Configuração do Fastify para usar Zod como validador e serializador

@@ -48,4 +48,27 @@ export class AlunoService {
 
     return novoAluno;
   }
+
+  public static async update(aluno: AlunoCompletoDTO) {
+    const updatedAluno = await prisma.alunos.update({
+      where: { id: aluno.id },
+      data: {
+        ...aluno,
+        notas: {
+          upsert: aluno.notas.map(nota => ({
+            where: { id: nota.id },
+            update: {
+              nota: nota.nota
+            },
+            create: {
+              disciplina: nota.disciplina.id,
+              nota: nota.nota
+            }
+          }))
+        }
+      }
+    });
+
+    return updatedAluno;
+  }
 }

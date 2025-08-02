@@ -48,5 +48,24 @@ export default function AlunoController(app: FastifyTypedInstance) {
     const aluno = await AlunoService.create(req.body);
 
     return reply.status(201).send(aluno);
-  })
+  });
+
+  app.put("/:id", {
+    schema: {
+      tags: ["Alunos"],
+      description: "Atualiza um aluno existente",
+      params: z.object({
+        id: z.union([ z.string(), z.number() ]).describe("ID do aluno a ser atualizado")
+      }),
+      body: AlunoCompletoDTOSchema,
+      response: {
+        // 200: AlunoSchema.describe("Aluno atualizado com sucesso"),
+        // 404: z.object({ message: z.string() }).describe("Aluno não encontrado")
+      }
+    }
+  }, async (req, reply) => {
+    const aluno = await AlunoService.update(req.body);
+
+    return reply.status(200).send(aluno);
+  });
 }

@@ -1,15 +1,15 @@
 import * as React from "react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from "./ui/dialog";
-import { Button } from "./ui/button";
-import { DialogTitle } from "@radix-ui/react-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { AlunoCompletoDTO } from "@/models/dto/AlunoCompletoDTO";
-import { AlunoForm } from "./AlunoForm";
-import { useMutation } from "@tanstack/react-query";
 import { AlunoService } from "@/services/AlunoService";
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { queryClient } from "@/components/QueryClientProvider";
+import { useMutation } from "@tanstack/react-query";
+import { AlunoForm } from "@/components/AlunoForm";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { queryClient } from "./QueryClientProvider";
 
-export function AdicionarAluno() {
+export function AdicionarAlunoButton() {
   const [ open, setOpen ] = React.useState(false);
   const [ aluno, setAluno ] = React.useState<AlunoCompletoDTO>({} as AlunoCompletoDTO);
 
@@ -20,7 +20,6 @@ export function AdicionarAluno() {
       toast.success("Aluno adicionado com sucesso!");
     },
     onError: (error) => {
-      setOpen(false);
       toast.error(`Erro ao adicionar aluno: ${error instanceof Error ? error.message : "Erro desconhecido"}`);
     },
     onSettled: () => {
@@ -37,7 +36,7 @@ export function AdicionarAluno() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" onClick={() => setOpen(true)}>
+        <Button onClick={() => setOpen(true)}>
           Adicionar Aluno
         </Button>
       </DialogTrigger>
