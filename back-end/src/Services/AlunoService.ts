@@ -1,5 +1,6 @@
 import { Aluno } from "../models/entity/AlunoEntity";
 import { prisma } from "../server";
+import { DisciplinaService } from "./DisciplinaService";
 
 
 export class AlunoService {
@@ -31,8 +32,20 @@ export class AlunoService {
   }
 
   public static async create(aluno: Aluno) {
+    const disciplinas = await DisciplinaService.getAll();
+
     const novoAluno = await prisma.alunos.create({
-      data: aluno
+      data: {
+        ...aluno,
+        notas: {
+          createMany: {
+            data: disciplinas.map((disciplina) => ({
+              disciplina: disciplina.id,
+              nota: 0
+            }))
+          }
+        }
+      },
     });
 
     return novoAluno;

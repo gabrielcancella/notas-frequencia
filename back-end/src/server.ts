@@ -11,14 +11,14 @@ import DisciplinaController from "./Controllers/DisciplinaController";
 // Cria uma instância do Fastify com suporte a Zod
 const app = fastify({}).withTypeProvider<ZodTypeProvider>();
 
+// Liberar para qualquer origem
+app.register(fastifyCors, {
+  origin: "*",
+});
+
 // Configuração do Fastify para usar Zod como validador e serializador
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
-
-// Liberar para qualquer origem
-app.register(fastifyCors, {
-  origin: false,
-});
 
 // Registra o swagger para documentação da API
 app.register(fastifySwagger, {
@@ -40,12 +40,12 @@ app.register(AlunoController, { prefix: "/alunos" });
 app.register(DisciplinaController, { prefix: "/disciplinas" });
 
 // Inicia o servidor na porta 3333
-app.listen({ port: 3333 }, (err, address) => {
+app.listen({ port: 3333, host: "0.0.0.0" }, (err, addr) => {
   if (err) {
     console.error(err);
     process.exit(1);
   }
-  console.log(`Server is running at ${address}`);
+  console.log(`Server is running at ${addr}`);
 });
 
 // Criação da instancia do Prisma Client
