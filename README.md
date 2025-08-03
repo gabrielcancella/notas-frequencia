@@ -41,7 +41,7 @@ Essas foram as versões utilizadas, mas pode funcionar em outras também.
   npm install
   ```
 
-3. Configure o banco de dados MySQL:
+3. Configure a conexão com o banco de dados MySQL:
   - Edite o arquivo `.env` na pasta `back-end` e configure a variável de conexão:
     ```env
     DATABASE_URL="mysql://user:password@localhost:3306/notas_frequencia"
