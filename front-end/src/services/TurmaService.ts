@@ -9,4 +9,10 @@ export class TurmaService {
 
     return data;
   }
+
+  public static async getMediaFrequencia() {
+    const res = await api.get("/turma/media-frequencia");
+    
+    return res.data;
+  }
 }

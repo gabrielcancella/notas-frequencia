@@ -21,7 +21,7 @@ export function NavigationItem({ href, children }: Readonly<{ href: string; chil
 
   React.useEffect(() => {
     setIsActive(pathname === href);
-  }, [ pathname ]);
+  }, [ pathname, href ]);
 
   return (
     <li>

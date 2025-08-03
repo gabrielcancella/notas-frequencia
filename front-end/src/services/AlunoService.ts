@@ -1,6 +1,5 @@
-import { api } from "@/lib/api";
-import { AlunoSchema } from "@/models/entity/AlunoEntity";
 import { AlunoCompletoDTO, AlunoCompletoDTOSchema } from "@/models/dto/AlunoCompletoDTO";
+import { api } from "@/lib/api";
 
 export class AlunoService {
   public static async getAllCompleto() {

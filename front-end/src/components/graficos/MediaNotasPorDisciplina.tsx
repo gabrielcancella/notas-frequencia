@@ -1,7 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Pie, PieChart } from "recharts";
 import { TurmaService } from "@/services/TurmaService";
 import { useQuery } from "@tanstack/react-query";
@@ -25,10 +24,6 @@ export function GraficoMediaNotasPorDisciplina() {
       }));
     }
   });
-
-  React.useEffect(() => {
-    console.log(chartConfig);
-  }, [chartConfig])
   
   return (
     <div className="flex flex-1 h-full">

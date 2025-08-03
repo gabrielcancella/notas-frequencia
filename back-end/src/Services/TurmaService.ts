@@ -29,4 +29,19 @@ export class TurmaService {
       }
     });
   }
+
+  public static async getMediaFrequencia() {
+    const alunos = await prisma.alunos.aggregate({
+      _sum: {
+        frequencia: true
+      },
+      _count: {
+        _all: true
+      }
+    });
+
+    return {
+      media: ((alunos._sum.frequencia ?? 0) / alunos._count._all)
+    };
+  }
 }
