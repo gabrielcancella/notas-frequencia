@@ -8,7 +8,6 @@ Sistema para gerenciamento de notas e frequência de alunos, com interface web m
 - Notas são registradas por disciplina e por aluno.
 - A frequência é registrada por aluno.
 - Existir a possibilidade de filtrar a lista de alunos.
-- O banco de dados utilizado é relacional.
 
 ## Decisões de Projeto
 
