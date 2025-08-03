@@ -1,20 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { AlunoCompletoDTO } from "@/models/dto/AlunoCompletoDTO";
 import { AdicionarAlunoButton } from "@/components/AdicionarAluno";
+import { AlterarAlunoButton } from "@/components/AlterarAluno";
+import { SelectFiltroAluno } from "@/components/SelectFiltroAluno";
+import { DisciplinaService } from "@/services/DisciplinaService";
+import { AlunoCompletoDTO } from "@/models/dto/AlunoCompletoDTO";
+import { FiltrosAluno } from "@/models/FiltrosAluno";
 import { AlunoService } from "@/services/AlunoService";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
 import { useQuery } from "@tanstack/react-query";
-import { DisciplinaService } from "@/services/DisciplinaService";
-import { AlterarAlunoButton } from "@/components/AlterarAluno";
-import { FiltrosAluno } from "@/models/FiltrosAluno";
-import { SelectFiltroAluno } from "@/components/SelectFiltroAluno";
+import { Badge } from "@/components/ui/badge";
 
 export default function AlunosPage() {
   const [ columns, setColumns ] = React.useState<ColumnDef<AlunoCompletoDTO>[]>();
   const [ filtro, setFiltro ] = React.useState<FiltrosAluno>(FiltrosAluno.Nenhum);
+  const [ pagination, setPagination ] = React.useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   const { data } = useQuery({
     queryKey: ["alunos", filtro],
@@ -102,7 +107,13 @@ export default function AlunosPage() {
         ),
         cell: ({ row }) => (
           <div className="flex flex-1 justify-center">
-            {row.getValue("frequencia")}%
+            <Badge variant={"outline"} className="gap-1.5">
+              <span
+                className={`size-1.5 rounded-full ${row.original.frequencia >= 75 ? "bg-green-500" : "bg-amber-500"}`}
+                aria-hidden="true"
+              ></span>
+              {row.original.frequencia}%
+            </Badge>
           </div>
         ),
       },
@@ -113,18 +124,16 @@ export default function AlunosPage() {
             Ações
           </div>
         ),
-        cell: ({ row }) => {
-          return (
-            <div className="flex flex-1 justify-center">
-              <AlterarAlunoButton aluno={row.original} />
-            </div>
-          )
-        }
+        cell: ({ row }) =>  (
+          <div className="flex flex-1 justify-center">
+            <AlterarAlunoButton aluno={row.original} />
+          </div>
+        )
       }
     ];
 
     setColumns(temp);
-  }, [ data ]);
+  }, [ data, pagination ]);
 
   return (
     <div>
@@ -137,7 +146,7 @@ export default function AlunosPage() {
         <AdicionarAlunoButton className="mt-auto" />
       </section>
       <section className="flex flex-1 justify-center">
-        <DataTable columns={columns ?? []} data={data?.alunos ?? []} />
+        <DataTable columns={columns ?? []} data={data?.alunos ?? []} pagination={pagination} onPaginationChange={setPagination} />
       </section>
     </div>
   )

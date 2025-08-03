@@ -111,7 +111,7 @@ export function AlunoForm({ aluno, onUpdate, onConfirm }: { aluno: AlunoCompleto
                         type="number"
                         value={field.value?.find(nota => nota.disciplina.id === disciplina.id)?.nota ?? 0}
                         onChange={(e) => {
-                          let idNota = field.value?.find(nota => nota.disciplina.id === disciplina.id)?.id;
+                          const idNota = field.value?.find(nota => nota.disciplina.id === disciplina.id)?.id;
                           let nota: number | string = e.target.value.replace(/[^0-9.-]+/g, "");
                           if (nota !== "") {
                             let numberNota = Number(nota);
@@ -124,19 +124,6 @@ export function AlunoForm({ aluno, onUpdate, onConfirm }: { aluno: AlunoCompleto
                           }
                           field.onChange([...field.value?.filter(n => n.disciplina.id !== disciplina.id), { id: idNota, disciplina, nota }]);
                         }}
-                        // onChange={(e) => {
-                        //   let frequencia: string | number = e.target.value;
-                        //   if (frequencia !== "") {
-                        //     let numberFrequencia = Number(frequencia);
-                        //     if (numberFrequencia < 0) {
-                        //       numberFrequencia = 0;
-                        //     } else if (numberFrequencia > 100) {
-                        //       numberFrequencia = 100;
-                        //     }
-                        //     frequencia = numberFrequencia;
-                        //   }
-                        //   field.onChange(frequencia);
-                        // }}
                         className="text-center"
                         min={0}
                         max={10}

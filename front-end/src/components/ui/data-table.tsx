@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react";
-import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table";
+import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, OnChangeFn, PaginationState, useReactTable } from "@tanstack/react-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "./skeleton";
 import { Button } from "./button";
@@ -9,28 +9,28 @@ import { Button } from "./button";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  isLoading?: boolean
+  isLoading?: boolean,
+  pagination: PaginationState,
+  onPaginationChange: OnChangeFn<PaginationState>
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading = false,
+  pagination,
+  onPaginationChange,
 }: DataTableProps<TData, TValue>) {
-  const [ pagination, setPagination ] = React.useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination,
+    onPaginationChange: onPaginationChange,
     pageCount: Math.ceil(data.length / pagination.pageSize),
     state: {
-      pagination: pagination,
+      pagination,
     }
   });
 

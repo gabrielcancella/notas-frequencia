@@ -1,12 +1,12 @@
 import * as React from "react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlunoCompletoDTO } from "@/models/dto/AlunoCompletoDTO";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { Button } from "./ui/button";
-import { AlunoForm } from "./AlunoForm";
-import { useMutation } from "@tanstack/react-query";
 import { AlunoService } from "@/services/AlunoService";
+import { queryClient } from "@/components/QueryClientProvider";
+import { useMutation } from "@tanstack/react-query";
+import { AlunoForm } from "@/components/AlunoForm";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { queryClient } from "./QueryClientProvider";
 
 export function AlterarAlunoButton({ aluno }: { aluno: AlunoCompletoDTO } ) {
   const [ open, setOpen ] = React.useState(false);
