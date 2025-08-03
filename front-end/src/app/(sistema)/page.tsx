@@ -8,7 +8,7 @@ export default function Home() {
       <section className="flex items-center justify-center">
         <h1 className="font-bold text-2xl">Dashboard</h1>
       </section>
-      <section className="grid grid-cols-4">
+      <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
         <Card className="aspect-square">
           <CardHeader>
             <CardTitle>Média de notas</CardTitle>

@@ -133,7 +133,7 @@ export default function AlunosPage() {
           <span className="text-sm text-muted-foreground">Filtro:</span>
           <SelectFiltroAluno selected={filtro} onChange={setFiltro} />
         </div>
-        <h1 className="font-bold text-2xl">Alunos</h1>
+        <h1 className="font-bold text-2xl hidden md:block">Alunos</h1>
         <AdicionarAlunoButton className="mt-auto" />
       </section>
       <section className="flex flex-1 justify-center">

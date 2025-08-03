@@ -8,7 +8,7 @@ export default function SistemaLayout({ children }: Readonly<{ children: React.R
         <NavigationItem href="/alunos">Alunos</NavigationItem>
       </Navigation>
     </header>
-    <main className="sm:px-2 md:px-4 xl:px-10 2xl:px-16">
+    <main className="px-2 md:px-4 xl:px-10 2xl:px-16">
       {children}
     </main>
   </>);

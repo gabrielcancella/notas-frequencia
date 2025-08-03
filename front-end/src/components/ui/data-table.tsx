@@ -35,8 +35,8 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="flex flex-1 flex-col gap-2">
-      <div className="overflow-hidden rounded-md border flex-1">
+    <div className="flex flex-1 flex-col gap-2 overflow-hidden">
+      <div className="overflow-auto rounded-md border flex-1">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup, i) => (
@@ -89,7 +89,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-2">
         <div>
           {!isLoading ? (
             <span className="text-sm text-muted-foreground">
@@ -99,7 +99,7 @@ export function DataTable<TData, TValue>({
             <Skeleton className="h-4 w-40" />
           )}
         </div>
-        <div>
+        <div className="hidden md:block">
           {!isLoading ? (
             <span className="text-sm text-muted-foreground">
               Página {pagination.pageIndex + 1} de {table.getPageCount()}
