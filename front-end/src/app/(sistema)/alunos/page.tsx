@@ -7,18 +7,37 @@ import { AlunoService } from "@/services/AlunoService";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
 import { DisciplinaService } from "@/services/DisciplinaService";
 import { AlterarAlunoButton } from "@/components/AlterarAluno";
+import { FiltrosAluno } from "@/models/FiltrosAluno";
+import { SelectFiltroAluno } from "@/components/SelectFiltroAluno";
 
 export default function AlunosPage() {
   const [ columns, setColumns ] = React.useState<ColumnDef<AlunoCompletoDTO>[]>();
+  const [ filtro, setFiltro ] = React.useState<FiltrosAluno>(FiltrosAluno.Nenhum);
 
   const { data } = useQuery({
-    queryKey: ["alunos"],
+    queryKey: ["alunos", filtro],
     queryFn: async () => {
+      let funcBuscarAlunos: () => Promise<AlunoCompletoDTO[]>;
+
+      switch (filtro) {
+        case FiltrosAluno.AcimaDaMedia:
+          funcBuscarAlunos = AlunoService.getAcimaDaMediaCompleto;
+          break;
+        case FiltrosAluno.AbaixoDaMedia:
+          funcBuscarAlunos = AlunoService.getAbaixoDaMediaCompleto;
+          break;
+        case FiltrosAluno.AbaixoDe75Frequencia:
+          funcBuscarAlunos = AlunoService.getAbaixoDe75FrequenciaCompleto;
+          break;
+        default:
+          funcBuscarAlunos = AlunoService.getAllCompleto;
+          break;
+      }
+
       const [ alunos, disciplinas ] = await Promise.all([
-        AlunoService.getAllCompleto(),
+        funcBuscarAlunos(),
         DisciplinaService.getAll()
       ]);
 
@@ -114,10 +133,13 @@ export default function AlunosPage() {
 
   return (
     <div>
-      <section className="relative flex justify-between items-center py-4">
-        <Button variant={"outline"}>Adicionar Aluno</Button>
+      <section className="flex justify-between items-center py-2">
+        <div>
+          <span className="text-sm text-muted-foreground">Filtro:</span>
+          <SelectFiltroAluno selected={filtro} onChange={setFiltro} />
+        </div>
         <h1 className="font-bold text-2xl">Alunos</h1>
-        <AdicionarAlunoButton />
+        <AdicionarAlunoButton className="mt-auto" />
       </section>
       <section className="flex flex-1 justify-center">
         <DataTable columns={columns ?? []} data={data?.alunos ?? []} />

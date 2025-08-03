@@ -1,6 +1,6 @@
 import { AlunoCompletoDTO } from "../models/dto/AlunoCompletoDTO";
 import { prisma } from "../server";
-import { DisciplinaService } from "./DisciplinaService";
+import { TurmaService } from "./TurmaService";
 
 
 export class AlunoService {
@@ -21,14 +21,50 @@ export class AlunoService {
       }
     });
 
-    return alunos.map((aluno) => ({
-      ...aluno,
-      notas: aluno.notas.map((nota) => ({
-        id: nota.id,
-        disciplina: nota.disciplinas,
-        nota: nota.nota
-      }))
-    }));
+    return alunos.map(this.reestruturaAlunoCompleto);
+  }
+
+  public static async getAcimaDaMediaCompleto() {
+    const media = await TurmaService.getMediaDeNotas();
+
+    console.log("Média de notas:", media);
+
+    const todosAlunos = await AlunoService.getAllCompleto();
+
+    return todosAlunos.filter(aluno => {
+      return (aluno.notas.reduce((valorAtual, nota) => ( valorAtual + nota.nota ), 0) / aluno.notas.length) > media;
+    });
+  }
+
+  public static async getAbaixoDaMediaCompleto() {
+    const media = await TurmaService.getMediaDeNotas();
+
+    console.log("Média de notas:", media);
+
+    const todosAlunos = await AlunoService.getAllCompleto();
+
+    return todosAlunos.filter(aluno => {
+      return (aluno.notas.reduce((valorAtual, nota) => ( valorAtual + nota.nota ), 0) / aluno.notas.length) < media;
+    });
+  }
+
+  public static async getAbaixoDe75FreqCompleto() {
+    const alunos = await prisma.alunos.findMany({
+      include: {
+        notas: {
+          include: {
+            disciplinas: true
+          }
+        }
+      },
+      where: {
+        frequencia: {
+          lt: 75
+        }
+      }
+    })
+
+    return alunos.map(this.reestruturaAlunoCompleto);
   }
 
   public static async create(aluno: AlunoCompletoDTO) {
@@ -70,5 +106,16 @@ export class AlunoService {
     });
 
     return updatedAluno;
+  }
+
+  private static reestruturaAlunoCompleto(aluno: any): AlunoCompletoDTO {
+    return {
+      ...aluno,
+      notas: aluno.notas.map((nota: any) => ({
+        id: nota.id,
+        disciplina: nota.disciplinas,
+        nota: nota.nota
+      }))
+    }
   }
 }

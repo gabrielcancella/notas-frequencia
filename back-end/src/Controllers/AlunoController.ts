@@ -35,6 +35,51 @@ export default function AlunoController(app: FastifyTypedInstance) {
     return alunos.length >= 1 ? reply.send(alunos) : reply.status(204).send({ message: "Nenhum aluno encontrado" });
   });
 
+  app.get("/completo/acima-da-media", {
+    schema: {
+      tags: ["Alunos"],
+      description: "Lista os alunos que possuem notas acima da média, incluindo notas e frequência",
+      response: {
+        200: z.array(AlunoCompletoDTOSchema).describe("Lista de alunos com notas e frequência"),
+        204: z.object({ message: z.string() }).describe("Nenhum aluno encontrado")
+      }
+    }
+  }, async (req, reply) => {
+    const alunos = await AlunoService.getAcimaDaMediaCompleto();
+
+    return alunos.length >= 1 ? reply.send(alunos) : reply.status(204).send({ message: "Nenhum aluno encontrado" });
+  });
+
+  app.get("/completo/abaixo-da-media", {
+    schema: {
+      tags: ["Alunos"],
+      description: "Lista os alunos que possuem notas abaixo da média, incluindo notas e frequência",
+      response: {
+        200: z.array(AlunoCompletoDTOSchema).describe("Lista de alunos com notas e frequência"),
+        204: z.object({ message: z.string() }).describe("Nenhum aluno encontrado")
+      }
+    }
+  }, async (req, reply) => {
+    const alunos = await AlunoService.getAbaixoDaMediaCompleto();
+
+    return alunos.length >= 1 ? reply.send(alunos) : reply.status(204).send({ message: "Nenhum aluno encontrado" });
+  });
+
+  app.get("/completo/abaixo-de-75-frequencia", {
+    schema: {
+      tags: ["Alunos"],
+      description: "Lista todos os alunos que possuem uma frequência abaixo de 75%, incluindo notas e frequência",
+      response: {
+        200: z.array(AlunoCompletoDTOSchema).describe("Lista de alunos com notas e frequência"),
+        204: z.object({ message: z.string() }).describe("Nenhum aluno encontrado")
+      }
+    }
+  }, async (req, reply) => {
+    const alunos = await AlunoService.getAbaixoDe75FreqCompleto();
+
+    return alunos.length >= 1 ? reply.send(alunos) : reply.status(204).send({ message: "Nenhum aluno encontrado" });
+  });
+
   app.post("/", {
     schema: {
       tags: ["Alunos"],
@@ -59,8 +104,7 @@ export default function AlunoController(app: FastifyTypedInstance) {
       }),
       body: AlunoCompletoDTOSchema,
       response: {
-        // 200: AlunoSchema.describe("Aluno atualizado com sucesso"),
-        // 404: z.object({ message: z.string() }).describe("Aluno não encontrado")
+        200: AlunoSchema.describe("Aluno atualizado com sucesso"),
       }
     }
   }, async (req, reply) => {

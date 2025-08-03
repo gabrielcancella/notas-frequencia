@@ -9,7 +9,7 @@ import { AlunoForm } from "@/components/AlunoForm";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-export function AdicionarAlunoButton() {
+export function AdicionarAlunoButton(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const [ open, setOpen ] = React.useState(false);
   const [ aluno, setAluno ] = React.useState<AlunoCompletoDTO>({} as AlunoCompletoDTO);
 
@@ -36,7 +36,7 @@ export function AdicionarAlunoButton() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setOpen(true)}>
+        <Button onClick={() => setOpen(true)} {...props}>
           Adicionar Aluno
         </Button>
       </DialogTrigger>
