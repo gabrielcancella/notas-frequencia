@@ -4,6 +4,7 @@ export default function SistemaLayout({ children }: Readonly<{ children: React.R
   return (<>
     <header>
       <Navigation>
+        <NavigationItem href="/">Dashboard</NavigationItem>
         <NavigationItem href="/alunos">Alunos</NavigationItem>
       </Navigation>
     </header>

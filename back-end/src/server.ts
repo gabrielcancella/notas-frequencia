@@ -7,9 +7,10 @@ import { PrismaClient } from "../generated/prisma";
 
 import AlunoController from "./Controllers/AlunoController";
 import DisciplinaController from "./Controllers/DisciplinaController";
+import TurmaController from "./Controllers/TurmaController";
 
 // Cria uma instância do Fastify com suporte a Zod
-const app = fastify({}).withTypeProvider<ZodTypeProvider>();
+const app = fastify().withTypeProvider<ZodTypeProvider>();
 
 // Liberar para qualquer origem
 app.register(fastifyCors, {
@@ -39,6 +40,7 @@ app.register(fastifySwaggerUi, {
 // Registra os controllers
 app.register(AlunoController, { prefix: "/alunos" });
 app.register(DisciplinaController, { prefix: "/disciplinas" });
+app.register(TurmaController, { prefix: "/turma" })
 
 // Inicia o servidor na porta 3333
 app.listen({ port: 3333, host: "0.0.0.0" }, (err, addr) => {
@@ -46,7 +48,7 @@ app.listen({ port: 3333, host: "0.0.0.0" }, (err, addr) => {
     console.error(err);
     process.exit(1);
   }
-  console.log(`Server is running at ${addr}`);
+  console.log(`O servidor está rodando no IP: ${addr}`);
 });
 
 // Criação da instancia do Prisma Client

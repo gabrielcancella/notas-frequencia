@@ -27,8 +27,6 @@ export class AlunoService {
   public static async getAcimaDaMediaCompleto() {
     const media = await TurmaService.getMediaDeNotas();
 
-    console.log("Média de notas:", media);
-
     const todosAlunos = await AlunoService.getAllCompleto();
 
     return todosAlunos.filter(aluno => {
@@ -38,8 +36,6 @@ export class AlunoService {
 
   public static async getAbaixoDaMediaCompleto() {
     const media = await TurmaService.getMediaDeNotas();
-
-    console.log("Média de notas:", media);
 
     const todosAlunos = await AlunoService.getAllCompleto();
 

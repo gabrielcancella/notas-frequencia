@@ -1,4 +1,9 @@
+"use client";
+
+import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "./button";
 
 export function Navigation({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (
@@ -10,10 +15,21 @@ export function Navigation({ children }: Readonly<{ children: React.ReactNode; }
   )
 }
 
-export function NavigationItem({ href, children }: Readonly<{ href: string; children: React.ReactNode; }>) {
+export function NavigationItem({ href, children }: Readonly<{ href: string; children: string; }>) {
+  const pathname = usePathname();
+  const [ isActive, setIsActive ] = React.useState(pathname === href);
+
+  React.useEffect(() => {
+    setIsActive(pathname === href);
+  }, [ pathname ]);
+
   return (
     <li>
-      <Link href={href}>{children}</Link>
+      <Link href={href} className={ isActive ? "pointer-events-none" : "" }>
+        <Button variant={isActive ? "outline" : "ghost"}>
+          {children}
+        </Button>
+      </Link>
     </li>
   )
 }
