@@ -24,7 +24,7 @@ export class TurmaService {
     return notas.map((d) => {
       const media = d.notas.reduce((valorAtual, nota) => ( valorAtual + nota.nota ), 0) / d.notas.length;
       return {
-        media: Number(media.toFixed(2)),
+        media: Number(media.toFixed(1)),
         disciplina: d.nome,
       }
     });

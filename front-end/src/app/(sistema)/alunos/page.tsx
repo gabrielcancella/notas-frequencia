@@ -50,11 +50,6 @@ export default function AlunosPage() {
 
     const temp: ColumnDef<AlunoCompletoDTO>[] = [
       {
-        accessorKey: "id",
-        header: "ID",
-        cell: ({ row }) => row.getValue("id"),
-      },
-      {
         accessorKey: "nome",
         header: "Nome",
       },

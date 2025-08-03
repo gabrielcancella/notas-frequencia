@@ -8,6 +8,8 @@ import { PrismaClient } from "../generated/prisma";
 import AlunoController from "./Controllers/AlunoController";
 import DisciplinaController from "./Controllers/DisciplinaController";
 import TurmaController from "./Controllers/TurmaController";
+import { AlunoService } from "./Services/AlunoService";
+import { DisciplinaService } from "./Services/DisciplinaService";
 
 // Cria uma instância do Fastify com suporte a Zod
 const app = fastify().withTypeProvider<ZodTypeProvider>();
